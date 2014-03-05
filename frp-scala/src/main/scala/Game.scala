@@ -51,49 +51,49 @@ object Game {
       case PlayerMoveUp    => {
         val newPlayer = (world.player._1, world.player._2 - 1)
 
-        if (empty(newPlayer, world)) world.copy(player = newPlayer)
+        if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
         else world
       }
       case PlayerMoveDown  => {
         val newPlayer = (world.player._1, world.player._2 + 1)
 
-        if (empty(newPlayer, world)) world.copy(player = newPlayer)
+        if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
         else world
       }
       case PlayerMoveLeft  => {
         val newPlayer = (world.player._1 - 1, world.player._2)
 
-        if (empty(newPlayer, world)) world.copy(player = newPlayer)
+        if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
         else world
       }
       case PlayerMoveRight => {
         val newPlayer = (world.player._1 + 1, world.player._2)
 
-        if (empty(newPlayer, world)) world.copy(player = newPlayer)
+        if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
         else world
       }
       case EnemyMoveUp     => {
         val newEnemy = (world.enemy._1, world.enemy._2 - 1)
 
-        if (empty(newEnemy, world)) world.copy(enemy = newEnemy)
+        if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
         else world
       }
       case EnemyMoveDown   => {
         val newEnemy = (world.enemy._1, world.enemy._2 + 1)
 
-        if (empty(newEnemy, world)) world.copy(enemy = newEnemy)
+        if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
         else world
       }
       case EnemyMoveLeft   => {
         val newEnemy = (world.enemy._1 - 1, world.enemy._2)
 
-        if (empty(newEnemy, world)) world.copy(enemy = newEnemy)
+        if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
         else world
       }
       case EnemyMoveRight  => {
         val newEnemy = (world.enemy._1 + 1, world.enemy._2)
 
-        if (empty(newEnemy, world)) world.copy(enemy = newEnemy)
+        if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
         else world
       }
       case _               => world
@@ -150,7 +150,7 @@ object Game {
     writer.drawString(tile._1, tile._2, "#")
   }
 
-  def empty(c: Coord, world: World): Boolean =
+  def isEmpty(c: Coord, world: World): Boolean =
     !(world.player == c || world.enemy == c || world.walls.exists(_ == c))
 
   val gameTickDuration: Duration = 1000.millis
