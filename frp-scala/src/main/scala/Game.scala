@@ -65,22 +65,22 @@ object Game {
 
   def onBehavior(world: World, behavior: Behavior): World = {
     behavior match {
-      case PlayerMoveNorth     => movePlayer(  0, -1 )
-      case PlayerMoveSouth     => movePlayer(  0,  1 )
-      case PlayerMoveWest      => movePlayer( -1,  0 )
-      case PlayerMoveEast      => movePlayer(  0,  1 )
-      case PlayerMoveNorthWest => movePlayer( -1, -1 )
-      case PlayerMoveNorthEast => movePlayer(  1, -1 )
-      case PlayerMoveSouthWest => movePlayer( -1,  1 )
-      case PlayerMoveSouthEast => movePlayer(  1,  1 )
-      case EnemyMoveNorth      => moveEnemy(  0, -1 )
-      case EnemyMoveSouth      => moveEnemy(  0,  1 )
-      case EnemyMoveWest       => moveEnemy( -1,  0 )
-      case EnemyMoveEast       => moveEnemy(  1,  0 )
-      case EnemyMoveNorthWest  => moveEnemy( -1, -1 )
-      case EnemyMoveNorthEast  => moveEnemy(  1, -1 )
-      case EnemyMoveSouthWest  => moveEnemy( -1,  1 )
-      case EnemyMoveSouthEast  => moveEnemy(  1,  1 )
+      case PlayerMoveNorth     => movePlayer(  0, -1, world )
+      case PlayerMoveSouth     => movePlayer(  0,  1, world )
+      case PlayerMoveWest      => movePlayer( -1,  0, world )
+      case PlayerMoveEast      => movePlayer(  1,  0, world )
+      case PlayerMoveNorthWest => movePlayer( -1, -1, world )
+      case PlayerMoveNorthEast => movePlayer(  1, -1, world )
+      case PlayerMoveSouthWest => movePlayer( -1,  1, world )
+      case PlayerMoveSouthEast => movePlayer(  1,  1, world )
+      case EnemyMoveNorth      => moveEnemy(   0, -1, world )
+      case EnemyMoveSouth      => moveEnemy(   0,  1, world )
+      case EnemyMoveWest       => moveEnemy(  -1,  0, world )
+      case EnemyMoveEast       => moveEnemy(   1,  0, world )
+      case EnemyMoveNorthWest  => moveEnemy(  -1, -1, world )
+      case EnemyMoveNorthEast  => moveEnemy(   1, -1, world )
+      case EnemyMoveSouthWest  => moveEnemy(  -1,  1, world )
+      case EnemyMoveSouthEast  => moveEnemy(   1,  1, world )
       case _                   => world
     }
   }
@@ -140,14 +140,14 @@ object Game {
 
   val gameTickDuration: Duration = 1000.millis
 
-  def movePlayer(world: World, dx: Int, dy: Int): World = {
+  def movePlayer(dx: Int, dy: Int, world: World): World = {
     val newPlayer = (world.player._1 + dx, world.player._2 + dy)
 
     if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
     else world
   }
 
-  def moveEnemy(world: World, dx: Int, dy: Int): World = {
+  def moveEnemy(dx: Int, dy: Int, world: World): World = {
     val newEnemy = (world.enemy._1 + dx, world.enemy._2 + dy)
 
     if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
