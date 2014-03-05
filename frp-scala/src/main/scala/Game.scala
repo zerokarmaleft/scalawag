@@ -11,92 +11,157 @@ object Game {
   type Coord = Tuple2[Int,Int]
 
   case class World(
-    rows: Int, cols: Int,
+    rows:   Int,
+    cols:   Int,
     player: Coord,
-    enemy: Coord,
-    walls: Seq[Coord]
+    enemy:  Coord,
+    walls:  Seq[Coord]
   )
 
   sealed trait Behavior
-  case object PlayerMoveUp    extends Behavior
-  case object PlayerMoveDown  extends Behavior
-  case object PlayerMoveLeft  extends Behavior
-  case object PlayerMoveRight extends Behavior
-  case object EnemyMoveUp     extends Behavior
-  case object EnemyMoveDown   extends Behavior
-  case object EnemyMoveLeft   extends Behavior
-  case object EnemyMoveRight  extends Behavior
+  case object PlayerMoveNorth     extends Behavior
+  case object PlayerMoveSouth     extends Behavior
+  case object PlayerMoveWest      extends Behavior
+  case object PlayerMoveEast      extends Behavior
+  case object PlayerMoveNorthWest extends Behavior
+  case object PlayerMoveNorthEast extends Behavior
+  case object PlayerMoveSouthWest extends Behavior
+  case object PlayerMoveSouthEast extends Behavior
+  case object EnemyMoveNorth      extends Behavior
+  case object EnemyMoveSouth      extends Behavior
+  case object EnemyMoveWest       extends Behavior
+  case object EnemyMoveEast       extends Behavior
+  case object EnemyMoveNorthWest  extends Behavior
+  case object EnemyMoveNorthEast  extends Behavior
+  case object EnemyMoveSouthWest  extends Behavior
+  case object EnemyMoveSouthEast  extends Behavior
 
   def toPlayerBehavior(event: KeyEvent): Behavior =
     event.getKeyChar() match {
-      case 'w' => PlayerMoveUp
-      case 'a' => PlayerMoveLeft
-      case 's' => PlayerMoveDown
-      case 'd' => PlayerMoveRight
+      case 'h' => PlayerMoveWest
+      case 'j' => PlayerMoveSouth
+      case 'k' => PlayerMoveNorth
+      case 'l' => PlayerMoveEast
+      case 'y' => PlayerMoveNorthWest
+      case 'u' => PlayerMoveNorthEast
+      case 'b' => PlayerMoveSouthWest
+      case 'n' => PlayerMoveSouthEast
     }
 
   def toEnemyBehavior(t: Long): Behavior = {
     val p = new Random().nextFloat()
 
     p match {
-      case p if (p >= 0.00 && p < 0.25) => EnemyMoveUp
-      case p if (p >= 0.25 && p < 0.50) => EnemyMoveDown
-      case p if (p >= 0.50 && p < 0.75) => EnemyMoveLeft
-      case p if (p >= 0.75 && p < 1.00) => EnemyMoveRight
+      case p if (p >= 0.000 && p < 0.125) => EnemyMoveNorth
+      case p if (p >= 0.125 && p < 0.250) => EnemyMoveSouth
+      case p if (p >= 0.250 && p < 0.375) => EnemyMoveWest
+      case p if (p >= 0.375 && p < 0.500) => EnemyMoveEast
+      case p if (p >= 0.500 && p < 0.625) => EnemyMoveNorthWest
+      case p if (p >= 0.625 && p < 0.750) => EnemyMoveNorthEast
+      case p if (p >= 0.750 && p < 0.875) => EnemyMoveSouthWest
+      case p if (p >= 0.875 && p < 1.000) => EnemyMoveSouthEast
     }
   }
 
   def onBehavior(world: World, behavior: Behavior): World = {
     behavior match {
-      case PlayerMoveUp    => {
+      case PlayerMoveNorth    => {
         val newPlayer = (world.player._1, world.player._2 - 1)
 
         if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
         else world
       }
-      case PlayerMoveDown  => {
+      case PlayerMoveSouth  => {
         val newPlayer = (world.player._1, world.player._2 + 1)
 
         if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
         else world
       }
-      case PlayerMoveLeft  => {
+      case PlayerMoveWest  => {
         val newPlayer = (world.player._1 - 1, world.player._2)
 
         if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
         else world
       }
-      case PlayerMoveRight => {
+      case PlayerMoveEast => {
         val newPlayer = (world.player._1 + 1, world.player._2)
 
         if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
         else world
       }
-      case EnemyMoveUp     => {
+      case PlayerMoveNorthWest => {
+        val newPlayer = (world.player._1 - 1, world.player._2 - 1)
+
+        if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
+        else world
+      }
+      case PlayerMoveNorthEast => {
+        val newPlayer = (world.player._1 + 1, world.player._2 - 1)
+
+        if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
+        else world
+      }
+      case PlayerMoveSouthWest => {
+        val newPlayer = (world.player._1 - 1, world.player._2 + 1)
+
+        if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
+        else world
+      }
+      case PlayerMoveSouthEast => {
+        val newPlayer = (world.player._1 + 1, world.player._2 + 1)
+
+        if (isEmpty(newPlayer, world)) world.copy(player = newPlayer)
+        else world
+      }
+      case EnemyMoveNorth => {
         val newEnemy = (world.enemy._1, world.enemy._2 - 1)
 
         if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
         else world
       }
-      case EnemyMoveDown   => {
+      case EnemyMoveSouth => {
         val newEnemy = (world.enemy._1, world.enemy._2 + 1)
 
         if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
         else world
       }
-      case EnemyMoveLeft   => {
+      case EnemyMoveWest => {
         val newEnemy = (world.enemy._1 - 1, world.enemy._2)
 
         if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
         else world
       }
-      case EnemyMoveRight  => {
+      case EnemyMoveEast => {
         val newEnemy = (world.enemy._1 + 1, world.enemy._2)
 
         if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
         else world
       }
-      case _               => world
+      case EnemyMoveNorthWest => {
+        val newEnemy = (world.enemy._1 - 1, world.enemy._2 - 1)
+
+        if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
+        else world
+      }
+      case EnemyMoveNorthEast => {
+        val newEnemy = (world.enemy._1 + 1, world.enemy._2 - 1)
+
+        if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
+        else world
+      }
+      case EnemyMoveSouthWest => {
+        val newEnemy = (world.enemy._1 - 1, world.enemy._2 + 1)
+
+        if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
+        else world
+      }
+      case EnemyMoveSouthEast => {
+        val newEnemy = (world.enemy._1 + 1, world.enemy._2 + 1)
+
+        if (isEmpty(newEnemy, world)) world.copy(enemy = newEnemy)
+        else world
+      }
+      case _ => world
     }
   }
 
